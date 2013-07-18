@@ -9,20 +9,19 @@ define("RES_CRIT",  2);
 define("RES_UNKNOWN",3);
 
 $nowData = $argv[1];
-$yesterdayData = $argv[2];
-if (sizeof($argv) <= 5)
+if (sizeof($argv) <= 4)
 {
-	$minCritLevel = (isset($argv[3])?(float)$argv[3]:null);
+	$minCritLevel = (isset($argv[2])?(float)$argv[2]:null);
 	$minWarnLevel = $minCritLevel;
-	$maxCritLevel = (isset($argv[4])?(float)$argv[4]:null);
+	$maxCritLevel = (isset($argv[3])?(float)$argv[3]:null);
 	$maxWarnLevel = $maxCritLevel;
 }
 else
 {
-	$minCritLevel = (isset($argv[3])?(float)$argv[3]:null);
-	$minWarnLevel = (isset($argv[4])?(float)$argv[4]:null);
-	$maxCritLevel = (isset($argv[5])?(float)$argv[5]:null);
-	$maxWarnLevel = (isset($argv[6])?(float)$argv[6]:null);
+	$minCritLevel = (isset($argv[2])?(float)$argv[2]:null);
+	$minWarnLevel = (isset($argv[3])?(float)$argv[3]:null);
+	$maxCritLevel = (isset($argv[4])?(float)$argv[4]:null);
+	$maxWarnLevel = (isset($argv[5])?(float)$argv[5]:null);
 }
 
 
@@ -66,7 +65,7 @@ $continuosError = false;
 $result = RES_UNKNOWN;
 foreach ($now as $time=>$value)
 {
-	$level = number_format($value,3);
+	$level = number_format($value,3,'.','');
 	if ($level < $minCritLevel)
 	{
 		$badPeriods[$time] = $level;
@@ -85,7 +84,7 @@ foreach ($now as $time=>$value)
 		$continuosError = true;
 		$result = RES_CRIT;
 	}
-	elseif ($maxCritLevel && $level > $maxWarnLevel)
+	elseif ($maxWarnLevel && $level > $maxWarnLevel)
 	{
 		$badPeriods[$time] = $level;
 		$continuosError = true;
